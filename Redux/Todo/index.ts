@@ -1,2 +1,40 @@
+import ReduxTodoState from "./interface";
+import {ReduxAction} from "../../Interfaces";
+import ReduxTodoReceiver from "./receiver";
+import {
+    TODO_EDITOR_CLOSE_EDITOR_DIALOG,
+    TODO_EDITOR_SET_FORM,
+    TODO_LIST_CREATE_NEW,
+    TODO_LIST_UPDATE_TODO
+} from "./types";
 
-const todoReducer = (state, action) =>
+const initialState: ReduxTodoState = {
+    list: {
+        todos: [],
+        isLoading: false
+    },
+    editor: null
+}
+
+export const todoReducer = (state: ReduxTodoState = initialState, action: ReduxAction) => {
+    switch (action.type) {
+        // Editor
+
+        case TODO_EDITOR_SET_FORM:
+            return ReduxTodoReceiver.todoEditorSetForm(state, action.payload);
+
+        case TODO_EDITOR_CLOSE_EDITOR_DIALOG:
+            return ReduxTodoReceiver.todoEditorCloseEditorDialog(state);
+
+        // List
+
+        case TODO_LIST_CREATE_NEW:
+            return ReduxTodoReceiver.todoListCreateNew(state, action.payload);
+
+        case TODO_LIST_UPDATE_TODO:
+            return ReduxTodoReceiver.todoListUpdateTodo(state, action.payload);
+
+        default:
+            return state;
+    }
+}

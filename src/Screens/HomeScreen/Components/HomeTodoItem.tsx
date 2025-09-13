@@ -1,3 +1,4 @@
+import React from "react";
 import {StyleSheet, View} from "react-native";
 import {connect} from "react-redux";
 import {bindActionCreators, Dispatch} from "redux";
@@ -26,7 +27,7 @@ type PropsWithRedux = Props
 	& ReturnType<typeof mapStateToProps>
 	& ReturnType<typeof mapDispatchToProps>;
 
-const HomeTodoItem = (props: PropsWithRedux) => {
+const HomeTodoItem: React.FC<PropsWithRedux> = (props) => {
 
 	return <View></View>;
 };

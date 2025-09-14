@@ -17,6 +17,7 @@ export type ReduxTodoEditorError = {
 }
 
 type ReduxTodoEditorState = {
+    todo: Entity.Todo.Todo | null;
     form: ReduxTodoEditorForm | null;
     errors: ReduxTodoEditorError[] | null;
     isLoading: boolean

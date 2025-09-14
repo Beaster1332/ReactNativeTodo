@@ -4,6 +4,7 @@ import ReduxTodoReceiver from "./receiver";
 import {
     TODO_EDITOR_CLOSE_FORM,
     TODO_EDITOR_SET_FORM,
+    TODO_EDITOR_SET_TODO,
     TODO_LIST_CREATE_NEW,
     TODO_LIST_UPDATE_TODO
 } from "./types";
@@ -22,6 +23,9 @@ export const todoReducer = (state: ReduxTodoState = initialState, action: ReduxA
 
         case TODO_EDITOR_SET_FORM:
             return ReduxTodoReceiver.todoEditorSetForm(state, action.payload);
+
+        case TODO_EDITOR_SET_TODO:
+            return ReduxTodoReceiver.todoEditorSetTodo(state, action.payload);
 
         case TODO_EDITOR_CLOSE_FORM:
             return ReduxTodoReceiver.todoEditorCloseForm(state);

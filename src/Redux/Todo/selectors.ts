@@ -1,3 +1,6 @@
 import ReduxRootState from "../../Interfaces/ReduxRootState";
-import { ReduxTodoEditorError, ReduxTodoEditorForm } from "./interface";
+import {Entity} from "../../Models/Entity";
 
+export const todoSelectIsStatusSelected = (state: ReduxRootState) =>
+    (status: Entity.Todo.Status): boolean =>
+        state.todo.editor.form?.status == status

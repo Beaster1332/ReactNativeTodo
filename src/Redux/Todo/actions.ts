@@ -1,5 +1,5 @@
 import {
-    TODO_EDITOR_CLOSE_EDITOR_DIALOG,
+    TODO_EDITOR_CLOSE_FORM,
     TODO_EDITOR_SET_FORM,
     TODO_LIST_CREATE_NEW,
     TODO_LIST_UPDATE_TODO
@@ -14,8 +14,8 @@ export const todoEditorSetForm = (payload: ReduxTodoEditorForm): ReduxAction => 
     payload
 });
 
-export const todoEditorCloseEditorDialog = (): ReduxAction => ({
-    type: TODO_EDITOR_CLOSE_EDITOR_DIALOG,
+export const todoEditorCloseForm = (): ReduxAction => ({
+    type: TODO_EDITOR_CLOSE_FORM,
 });
 
 // List

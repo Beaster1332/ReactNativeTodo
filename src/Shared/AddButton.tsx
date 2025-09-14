@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 type Props = {
 	onPress: () => void;
-	headerTitle: string;
+	headerTitle?: string;
 	buttonText: string;
 	screen?: string;
 };
@@ -35,14 +35,12 @@ const AddButton: React.FC<Props> = (props) => {
 
 	const pressOutCallback = () => {
 		props.onPress();
-		if (props.screen == undefined) {
-			navigation.goBack();
-		} else {
+		if (props.screen != undefined) {
 			navigation.navigate(props.screen, {
 				title: props.headerTitle
 			});
 		}
-	};
+	}
 
 	return (
 		<AnimatedPressable

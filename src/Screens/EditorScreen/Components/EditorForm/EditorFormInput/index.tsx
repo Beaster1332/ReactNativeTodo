@@ -5,7 +5,7 @@ import { bindActionCreators, Dispatch } from "redux";
 import ReduxRootState from "../../../../../Interfaces/ReduxRootState";
 import { todoEditorSetForm } from "../../../../../Redux/Todo/actions";
 import { ReduxTodoEditorForm } from "../../../../../Redux/Todo/interface";
-import { todoSelectError } from "../../../../../Redux/Todo/selectors";
+import ViewModel from "./ViewModel";
 
 const styles = StyleSheet.create({
 	input: {
@@ -14,19 +14,23 @@ const styles = StyleSheet.create({
 		paddingLeft: 16,
 		paddingRight: 16,
 		borderColor: "#21a66a",
-		borderWidth: 1,
+		borderWidth: 2,
 		borderRadius: 8,
 		fontSize: 16
 	},
 	error: {
-		borderColor: "red",
+		borderColor: "red"
+	},
+	errorText: {
+		marginTop: 8,
 		color: "red"
 	}
 });
 
 const mapStateToProps = (state: ReduxRootState) => (
 	{
-		form: state.todo.editor.form
+		form: state.todo.editor.form,
+		errors: state.todo.editor.errors
 	}
 );
 
@@ -40,12 +44,14 @@ type Props = {
 	multiline?: boolean;
 };
 
-type PropsWithRedux = Props
+export type PropsWithRedux = Props
 	& ReturnType<typeof mapStateToProps>
 	& ReturnType<typeof mapDispatchToProps>;
 
+const useViewModel = (props: PropsWithRedux): ViewModel => new ViewModel(props);
+
 const EditorFormInput: React.FC<PropsWithRedux> = props => {
-	const value = props.form[props.name];
+	const viewModel = useViewModel(props);
 
 	const handleChange = (text: string) => {
 		props.todoEditorSetForm({
@@ -56,14 +62,14 @@ const EditorFormInput: React.FC<PropsWithRedux> = props => {
 
 	return <View>
 		<TextInput
-			style={ [styles.input, Boolean(error) && styles.error] }
-			value={ value }
+			style={ [styles.input, Boolean(viewModel.error) && styles.error] }
+			value={ viewModel.value }
 			placeholder={ props.placeholder }
 			onChangeText={ (text) => handleChange(text) }
 			multiline={ props?.multiline }
 			textAlignVertical={ "top" }
 		/>
-		{Boolean(error) && <Text>{error.value}</Text>}
+		{Boolean(viewModel.error) && <Text style={styles.errorText}>{viewModel.error.value}</Text>}
 	</View>;
 };
 

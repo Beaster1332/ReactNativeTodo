@@ -1,29 +1,58 @@
+import MaterialDesignIcons
+	from "@react-native-vector-icons/material-design-icons";
+import { useNavigation } from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import React from "react";
+import { TouchableOpacity } from "react-native";
+import { connect } from "react-redux";
+import { bindActionCreators, Dispatch } from "redux";
+import ReduxRootState from "../Interfaces/ReduxRootState";
+import Screens from "../Models/Screens";
+import {
+	todoEditorCloseForm,
+	todoListCreateNew
+} from "../Redux/Todo/actions";
+import HeaderBackButton from "./Components/HeaderBackButton";
 import EditorScreen from "./EditorScreen";
 import HomeScreen from "./HomeScreen";
 
 const Stack = createNativeStackNavigator();
 
-const Navigation = () => {
+const mapStateToProps = (state: ReduxRootState) => (
+	{
+	}
+);
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+	todoEditorCloseForm
+}, dispatch);
+
+type Props = {};
+
+type PropsWithRedux = Props
+	& ReturnType<typeof mapStateToProps>
+	& ReturnType<typeof mapDispatchToProps>;
+
+const Navigation: React.FC<PropsWithRedux> = props => {
 	return <Stack.Navigator initialRouteName="Home">
 		<Stack.Screen
-			name="Home"
+			name={Screens.Home}
 			component={HomeScreen}
 			options={{
 				header: null
 			}}
 		/>
 		<Stack.Screen
-			name="Editor"
+			name={Screens.Editor}
 			component={EditorScreen}
-			options={({route}) => (
+			options={({route, navigation}) => (
 				{
-					title: route.params.title
+					title: route.params.title,
+					headerLeft: () => <HeaderBackButton onPress={props.todoEditorCloseForm} />
 				}
 			)}
 		/>
 	</Stack.Navigator>;
 };
 
-export default Navigation;
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

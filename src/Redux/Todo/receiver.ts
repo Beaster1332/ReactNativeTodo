@@ -1,5 +1,7 @@
+import "react-native-get-random-values";
 import { v4 as uuidV4 } from "uuid";
 import { Entity } from "../../Models/Entity";
+import { validateTodoForm } from "../../Utils/validations";
 import ReduxTodoState, { ReduxTodoEditorForm } from "./interface";
 
 namespace ReduxTodoReceiver {
@@ -18,13 +20,12 @@ namespace ReduxTodoReceiver {
 		}
 	);
 
-	export const todoEditorCloseEditorDialog = (state: ReduxTodoState): ReduxTodoState => (
+	export const todoEditorCloseForm = (
+		state: ReduxTodoState
+	): ReduxTodoState => (
 		{
 			...state,
-			editor: {
-				...state.editor,
-				form: null
-			}
+			editor: null
 		}
 	);
 
@@ -33,8 +34,20 @@ namespace ReduxTodoReceiver {
 	export const todoListCreateNew = (
 		state: ReduxTodoState,
 		form: ReduxTodoEditorForm
-	): ReduxTodoState => (
-		{
+	): ReduxTodoState => {
+		const errors = validateTodoForm(form);
+
+		if (Boolean(errors.length)) {
+			return {
+				...state,
+				editor: {
+					...state.editor,
+					errors
+				}
+			};
+		}
+
+		return {
 			...state,
 			list: {
 				...state.list,
@@ -50,10 +63,11 @@ namespace ReduxTodoReceiver {
 			},
 			editor: {
 				...state.editor,
-				form: null
+				form: null,
+				errors: null
 			}
-		}
-	);
+		};
+	};
 
 	export const todoListUpdateTodo = (
 		state: ReduxTodoState,

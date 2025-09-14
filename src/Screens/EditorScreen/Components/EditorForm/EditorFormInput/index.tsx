@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "redux";
-import ReduxRootState from "../../../../Interfaces/ReduxRootState";
-import { todoEditorSetForm } from "../../../../Redux/Todo/actions";
-import { ReduxTodoEditorForm } from "../../../../Redux/Todo/interface";
+import ReduxRootState from "../../../../../Interfaces/ReduxRootState";
+import { todoEditorSetForm } from "../../../../../Redux/Todo/actions";
+import { ReduxTodoEditorForm } from "../../../../../Redux/Todo/interface";
+import { todoSelectError } from "../../../../../Redux/Todo/selectors";
 
 const styles = StyleSheet.create({
 	input: {
@@ -12,10 +13,14 @@ const styles = StyleSheet.create({
 		paddingBottom: 20,
 		paddingLeft: 16,
 		paddingRight: 16,
-		borderColor: "blue",
+		borderColor: "#21a66a",
 		borderWidth: 1,
 		borderRadius: 8,
 		fontSize: 16
+	},
+	error: {
+		borderColor: "red",
+		color: "red"
 	}
 });
 
@@ -42,11 +47,6 @@ type PropsWithRedux = Props
 const EditorFormInput: React.FC<PropsWithRedux> = props => {
 	const value = props.form[props.name];
 
-	// if (props.isValid != undefined && !props.isValid) {
-	//     Alert.alert("Ошибка", props.alertText);
-	//     return;
-	// }
-
 	const handleChange = (text: string) => {
 		props.todoEditorSetForm({
 			...props.form,
@@ -54,13 +54,17 @@ const EditorFormInput: React.FC<PropsWithRedux> = props => {
 		});
 	};
 
-	return <TextInput
-		style={ styles.input }
-		value={ value }
-		placeholder={ props.placeholder }
-		onChange={(event) => handleChange(event) } // todo:: разобраться с передачей event, сделать еще отключение клавиатуры, когда нажимаешь вне инпута
-		multiline={ props?.multiline }
-	/>;
+	return <View>
+		<TextInput
+			style={ [styles.input, Boolean(error) && styles.error] }
+			value={ value }
+			placeholder={ props.placeholder }
+			onChangeText={ (text) => handleChange(text) }
+			multiline={ props?.multiline }
+			textAlignVertical={ "top" }
+		/>
+		{Boolean(error) && <Text>{error.value}</Text>}
+	</View>;
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditorFormInput);

@@ -9,10 +9,16 @@ export type ReduxTodoEditorForm = {
     title: string;
     description: string;
     status: string;
+};
+
+export type ReduxTodoEditorError = {
+    type: keyof ReduxTodoEditorForm;
+    value: string;
 }
 
 type ReduxTodoEditorState = {
     form: ReduxTodoEditorForm | null;
+    errors: ReduxTodoEditorError[] | null;
     isLoading: boolean
 }
 

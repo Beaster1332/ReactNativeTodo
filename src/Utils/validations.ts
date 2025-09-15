@@ -1,22 +1,24 @@
 import {
 	ReduxTodoEditorError,
-	ReduxTodoEditorForm
+	ReduxTodoEditorForm,
 } from "../Redux/Todo/interface";
 
-export const validateTodoForm = (form: ReduxTodoEditorForm): ReduxTodoEditorError[] => {
+export const validateTodoForm = (
+	form: ReduxTodoEditorForm,
+): ReduxTodoEditorError[] => {
 	const errors = [];
 
-	if (!Boolean(form.title.length)) {
+	if (!Boolean(form.title.trim().length)) {
 		errors.push({
 			type: "title",
-			value: "Название задачи не может быть пустым"
+			value: "Название задачи не может быть пустым",
 		} as ReduxTodoEditorError);
 	}
 
-	if (!Boolean(form.description.length)) {
+	if (!Boolean(form.description.trim().length)) {
 		errors.push({
 			type: "description",
-			value: "Описание задачи не может быть пустым"
+			value: "Описание задачи не может быть пустым",
 		} as ReduxTodoEditorError);
 	}
 
